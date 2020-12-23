@@ -1,12 +1,8 @@
-import sqlite3
-import numpy as np 
-
 import sys
 import sqlite3
 import numpy as np
 
-
-IS_PYTHON3 = sys.version_info[0] >= 3
+from utils import array_to_blob, blob_to_array, image_ids_to_pair_id, pair_id_to_image_ids 
 
 MAX_IMAGE_ID = 2**31 - 1
 
@@ -169,26 +165,6 @@ class COLMAPDatabase(sqlite3.Connection):
              array_to_blob(F), array_to_blob(E), array_to_blob(H)))
 
 
-def array_to_blob(array):
-    return array.tostring()
-
-
-def blob_to_array(blob, dtype, shape=(-1,)):
-    return np.fromstring(blob, dtype=dtype).reshape(*shape)
-
-
-def image_ids_to_pair_id(image_id1, image_id2):
-    if image_id1 > image_id2:
-        image_id1, image_id2 = image_id2, image_id1
-    return image_id1 * MAX_IMAGE_ID + image_id2
-
-
-def pair_id_to_image_ids(pair_id):
-    image_id2 = pair_id % MAX_IMAGE_ID
-    image_id1 = (pair_id - image_id2) // MAX_IMAGE_ID
-    return image_id1, image_id2
-
-
 if __name__ == "__main__":
     # db = COLMAPDatabase.connect("data/yan2017/sift_ToH/database.db")
     # db = COLMAPDatabase.connect("data/yan2017/dsp_sift_ToH/database.db")
@@ -220,14 +196,20 @@ if __name__ == "__main__":
         print(pair_id_to_image_ids(pair_id), rows, cols, blob_to_array(matches, np.uint32), config, blob_to_array(F, np.float64), blob_to_array(E, np.float64), blob_to_array(H, np.float64))
         break
     
+    print("keypoints")
     results = db.execute("select * FROM keypoints")
     for result in results:
         image_id, rows, cols, keypoints = result
-        print(image_id, rows, cols, blob_to_array(keypoints, np.float32).reshape((rows, cols))[0])
+        print(image_id, rows, cols, blob_to_array(keypoints, np.float32).reshape((rows, cols))[0:10])
         break
 
+    print("matches")
     results = db.execute("select * FROM matches")
+    i = 0
     for result in results:
         pair_id, rows, cols, matches = result
-        print(pair_id_to_image_ids(pair_id), rows, cols, blob_to_array(matches, np.uint32).reshape((rows, cols)))
-        break
+        # print(pair_id_to_image_ids(pair_id), rows, cols, blob_to_array(matches, np.uint32, (rows, cols)))
+        print(blob_to_array(matches, np.uint32, (rows, cols))[:15])
+        i += 1
+        if i == 5:
+            break
