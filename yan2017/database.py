@@ -169,8 +169,9 @@ if __name__ == "__main__":
     # db = COLMAPDatabase.connect("data/yan2017/sift_ToH/database.db")
     # db = COLMAPDatabase.connect("data/yan2017/dsp_sift_ToH/database.db")
     # db = COLMAPDatabase.connect("data/yan2017/ToH_colmap/database.db")
-    db = COLMAPDatabase.connect("data/yan2017/ToH_colmap/match.db")
+    db = COLMAPDatabase.connect("data/yan2017/colmap_street/match.db")
 
+    print("cameras")
     results = db.execute("SELECT * FROM cameras")
     for result in results:
         camera_id, model, width, height, params, prior = result
@@ -178,38 +179,42 @@ if __name__ == "__main__":
         print(camera_id, model, width, height, params, prior)
         break
 
+    print("descriptors")
     results = db.execute("SELECT * FROM descriptors")
     for result in results:
         image_id, rows, cols, data = result
-        print(image_id, rows, cols, np.shape(blob_to_array(data, np.uint8)))
+        print(image_id, rows, cols, blob_to_array(data, np.uint8, (rows, cols)).shape)
         break
 
+    print("images")
     results = db.execute("SELECT * FROM images")
     for result in results:
         image_id, name, camera_id, prior_qw, prior_qx, prior_qy, prior_qz, prior_tx, prior_ty, prior_tz = result
         print(image_id, name, camera_id, prior_qw, prior_qx, prior_qy, prior_qz, prior_tx, prior_ty, prior_tz)
         break
     
+    print("two_view_geometries")
     results = db.execute("SELECT * FROM two_view_geometries")
     for result in results:
+        # print(result)
         pair_id, rows, cols, matches, config, F, E, H = result
-        print(pair_id_to_image_ids(pair_id), rows, cols, blob_to_array(matches, np.uint32), config, blob_to_array(F, np.float64), blob_to_array(E, np.float64), blob_to_array(H, np.float64))
+        # print(pair_id_to_image_ids(pair_id), rows, cols, blob_to_array(matches, np.uint32, (rows, cols)), config, blob_to_array(F, np.float64, (3, 3)), blob_to_array(E, np.float64, (3, 3)), blob_to_array(H, np.float64, (3, 3)))
+        print(pair_id, rows, cols)
         break
     
     print("keypoints")
     results = db.execute("select * FROM keypoints")
     for result in results:
         image_id, rows, cols, keypoints = result
-        print(image_id, rows, cols, blob_to_array(keypoints, np.float32).reshape((rows, cols))[0:10])
-        break
+        # print(image_id, rows, cols, blob_to_array(keypoints, np.float32).reshape((rows, cols))[0:10])
+        print(image_id, rows)
+        # break
 
     print("matches")
     results = db.execute("select * FROM matches")
-    i = 0
     for result in results:
+        # print(result)
         pair_id, rows, cols, matches = result
         # print(pair_id_to_image_ids(pair_id), rows, cols, blob_to_array(matches, np.uint32, (rows, cols)))
-        print(blob_to_array(matches, np.uint32, (rows, cols))[:15])
-        i += 1
-        if i == 5:
-            break
+        print(pair_id_to_image_ids(pair_id), rows)
+        # print(blob_to_array(matches, np.uint32, (rows, cols)))

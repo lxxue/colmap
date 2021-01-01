@@ -6,6 +6,8 @@ def array_to_blob(array):
     return array.tostring()
 
 def blob_to_array(blob, dtype, shape=(-1,)):
+    if blob is None:
+        return None
     return np.fromstring(blob, dtype=dtype).reshape(*shape)
 
 def image_ids_to_pair_id(image_id1, image_id2):
@@ -26,7 +28,7 @@ def binary_search_matches(keypoint_id, matches):
     while left <= right and keypoint_id != matches[mid, 0]:
         if keypoint_id < matches[mid, 0]:
             right = mid - 1
-        if keypoint_id > matches[mid, 0]
+        if keypoint_id > matches[mid, 0]:
             left = mid + 1
 
         mid = (left + right) // 2
@@ -35,6 +37,7 @@ def binary_search_matches(keypoint_id, matches):
         assert(keypoint_id == matches[mid, 0])
         return matches[mid, 1]
     else:
+        # there might be no keypoint asscoiated with `keypoint_id` in this match
         return -1
     
     # assert(mid >= 0 and mid < len(matches) and keypoint_id == matches[mid, 0])
