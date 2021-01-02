@@ -41,3 +41,26 @@ def binary_search_matches(keypoint_id, matches):
         return -1
     
     # assert(mid >= 0 and mid < len(matches) and keypoint_id == matches[mid, 0])
+
+
+def IntersectList(v1, v2, need_diff=True):
+    """
+        intersect: intersection of v1 and v2
+        non_intersect: v2 - v1
+    """
+    intersect = []
+
+    seen = set(v1)
+    if need_diff:
+        for element in v2:
+            if element is in seen:
+                intersect.append(element)
+            else:
+                non_intersect.append(element)
+        return intersect, non_intersect
+    else:
+        non_intersect = []
+        for element in v2:
+            if element is in seen:
+                intersect.append(element)
+        return intersect

@@ -9,22 +9,6 @@ import numpy as np
 #     def compute(self):
 #         return 0
 
-def IntersectList(v1, v2):
-    """
-        intersect: intersection of v1 and v2
-        non_intersect: v2 - v1
-    """
-    intersect = []
-    non_intersect = []
-
-    seen = set(v1)
-    for element in v2:
-        if element is in seen:
-            intersect.append(element)
-        else:
-            non_intersect.append(element)
-    return intersect, non_intersect
-
 
 def SummarizeScene(tracks, visible_tracks, visible_keypoints, coverage_thres, alpha, eps):
     assert(len(visible_tracks) == len(visible_keypoints))
