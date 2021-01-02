@@ -17,7 +17,7 @@ def ComputeTracks(num_images, num_keypoints_list, matches_list, track_degree):
     # not sure if this is the better way 
     # TODO: in this way the track construction is not invariant to  permutation
     # try filtering out inconsistent tracks as done in the Bundler's commented code?
-    image_marked = np.zeros((num_images,), dtype=np.bool)
+    img_marked = np.zeros((num_images,), dtype=np.bool)
     touched = []
     
     tracks = []
