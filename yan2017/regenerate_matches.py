@@ -2,7 +2,7 @@ import numpy as np
 import os
 
 from utils import IntersectList, image_ids_to_pair_id, pair_id_to_image_ids, blob_to_array
-from data_structure import MatchesList
+from matches_list import MatchesList
 from database import COLMAPDatabase
 
 def ConstructPathNetwork(num_images, matches_list, img_included, unique_tracks, visible_tracks, minimal_views, score_thres):
@@ -69,7 +69,9 @@ def ConstructPathNetwork(num_images, matches_list, img_included, unique_tracks, 
 
 def RewriteDatabese(old_db, new_db_path, is_geo_neighbors):
     if os.path.exists(new_db_path):
-        print("ERROR: database path already exists -- will not modify it.")
+        os.system("rm {}".format(new_db_path))
+        # print("ERROR: database path already exists -- will not modify it.")
+        print("WARNING: database path already exists -- will overwrite it.")
         return
     new_db = COLMAPDatabase.connect(new_db_path) 
     new_db.create_tables()

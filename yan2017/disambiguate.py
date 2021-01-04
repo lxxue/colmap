@@ -3,15 +3,19 @@ import sqlite3
 from collections import namedtuple
 
 from database import COLMAPDatabase
-from data_structure import MatchesList
+from matches_list import MatchesList
 from compute_tracks import ComputeTracks
 from summarize_scene import SummarizeScene
 from regenerate_matches import ConstructPathNetwork, RewriteDatabese
 
-DisambiguateParameters = namedtuple('DisambiguateParameters', 
-                                    'track_degree coverage_thres score_thres alpha minimal_views',
-                                    defaults=[3, 0.6, 0.1, 0, 5])
 
+DisambiguateParameters = namedtuple('DisambiguateParameters', 
+                                    'track_degree \
+                                     coverage_thres \
+                                     score_thres \
+                                     alpha \
+                                     minimal_views',
+                                     defaults=[3, 0.6, 0.1, 0, 5])
 
 
 def Disambiguate(db_path, new_db_path, params):

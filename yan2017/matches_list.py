@@ -21,7 +21,7 @@ class MatchesList:
                 matches = blob_to_array(matches, np.uint32, (rows, cols))
                 # print(image_id1, image_id2, rows)
                 if rows > 0:
-                    print(image_id1, image_id2)
+                    # print(image_id1, image_id2)
                     matches_1 = self._sort_matches(matches) 
                     matches_2 = matches[:, [1,0]]
                     # image_id is 1-based
@@ -34,6 +34,8 @@ class MatchesList:
                     # self.matches_list[image_id2-1].append(image_id1) 
         # print(self.matches_list[0])
         # print(self.matches_list[1])
+        # print(self.matches_list[2])
+        # print(self.matches_list[3])
         # print([nbr[0] for nbr in self.matches_list[2]])
         # print(self.matches_list[1][:3])
 
