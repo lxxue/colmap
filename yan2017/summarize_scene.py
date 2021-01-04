@@ -1,5 +1,6 @@
 
 import numpy as np
+from utils import IntersectList
 
 # class SceneScore:
 #     def __init__(self, alpha):
@@ -10,7 +11,7 @@ import numpy as np
 #         return 0
 
 
-def SummarizeScene(tracks, visible_tracks, visible_keypoints, coverage_thres, alpha, eps):
+def SummarizeScene(tracks, visible_tracks, visible_keypoints, coverage_thres, alpha):
     assert(len(visible_tracks) == len(visible_keypoints))
     num_images = len(visible_tracks)
     img_included = np.zeros((num_images,), dtype=np.bool)
