@@ -43,7 +43,11 @@ def SummarizeScene(tracks, visible_tracks, visible_keypoints, coverage_thres, al
                 chosen_intersected = intersected
                 chosen_non_intersected = non_intersected
 
-        assert(chosen_image > -1)
+        if chosen_image == -1:
+            assert(np.all(img_included))
+            print("all images included! coverage_thres too large!")
+            break
+        # assert(chosen_image > -1)
         img_included[chosen_image] = True
         covered_tracks.extend(non_intersected)
 

@@ -24,7 +24,7 @@ def Disambiguate(db_path, new_db_path, params):
     #     image_id, rows, cols, keypoints = keypoints_result
     #     num_keypoints_list.append(rows)
     #     print(image_id, rows)
-    print(num_keypoints_list)
+    # print(num_keypoints_list)
     matches_list = MatchesList(num_images, database=db) 
     tracks, visible_tracks, visible_keypoints = ComputeTracks(
             num_images, num_keypoints_list, matches_list, params.track_degree)

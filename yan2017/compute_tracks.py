@@ -76,8 +76,11 @@ def ComputeTracks(num_images, num_keypoints_list, matches_list, track_degree):
     # All tracks have been computed
     # we check which tracks and keypoints are visible in each image
     # track_idx is 0-based
-    visible_tracks = [[]] * num_images
-    visible_keypoints = [[]] * num_images
+    # `[[]] * N` create a list containing the same list object N times!!!
+    # visible_tracks = [[]] * num_images
+    # visible_keypoints = [[]] * num_images
+    visible_tracks = [[] for _ in range(num_images)]
+    visible_keypoints = [[] for _ in range(num_images)]
     for track_idx, track in enumerate(tracks):
         for img_id, keypoint_id in track:
             visible_tracks[img_id-1].append(track_idx)
