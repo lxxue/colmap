@@ -6,7 +6,7 @@ from database import COLMAPDatabase
 from matches_list import MatchesList
 from compute_tracks import ComputeTracks
 from summarize_scene import SummarizeScene
-from regenerate_matches import ConstructPathNetwork, RewriteDatabese
+from regenerate_matches import ConstructPathNetwork, RewriteDatabese, CompareDatabase
 
 
 DisambiguateParameters = namedtuple('DisambiguateParameters', 
@@ -37,8 +37,9 @@ def Disambiguate(db_path, new_db_path, params):
     is_geo_neighbors = ConstructPathNetwork(
             num_images, matches_list, img_included, unique_tracks, visible_tracks, params.minimal_views, params.score_thres)
     RewriteDatabese(db, new_db_path, is_geo_neighbors)
-
     db.close()
+    CompareDatabase(db_path, new_db_path)
+
     
         
 
