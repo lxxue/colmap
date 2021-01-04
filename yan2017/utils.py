@@ -53,7 +53,7 @@ def IntersectList(v1, v2, need_diff=True):
     seen = set(v1)
     if need_diff:
         for element in v2:
-            if element is in seen:
+            if element in seen:
                 intersect.append(element)
             else:
                 non_intersect.append(element)
@@ -61,6 +61,6 @@ def IntersectList(v1, v2, need_diff=True):
     else:
         non_intersect = []
         for element in v2:
-            if element is in seen:
+            if element in seen:
                 intersect.append(element)
         return intersect

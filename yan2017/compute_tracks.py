@@ -26,7 +26,7 @@ def ComputeTracks(num_images, num_keypoints_list, matches_list, track_degree):
     keypoints_visited = np.zeros((num_images, max_num_keypoints), dtype=np.bool)
 
     # image is 1-based indexed, keypoints is 0-based indexed
-    for i, num_keypoints in enumerate(num_keypoints_list)):
+    for i, num_keypoints in enumerate(num_keypoints_list):
         for j in range(num_keypoints):
             features = []
             features_queue = queue.Queue()
@@ -37,7 +37,7 @@ def ComputeTracks(num_images, num_keypoints_list, matches_list, track_degree):
 
             # Reset flags
             for touched_idx in touched:
-                img_marked[touched_idx] = False
+                img_marked[touched_idx-1] = False
             touched = []
 
             # image_id is 1-based, keypoint_id is 0_based
@@ -50,19 +50,19 @@ def ComputeTracks(num_images, num_keypoints_list, matches_list, track_degree):
             while not features_queue.empty():
                 img_id1, keypoint_id1 = features_queue.get()
 
-                for img_id2, matches in matches_list[img_id1]:
+                for img_id2, matches in matches_list[img_id1-1]:
                     # skip already visited images to avoid inconsistency
-                    if img_marked[img_id2]:
+                    if img_marked[img_id2-1]:
                         continue
                     keypoint_id2 = binary_search_matches(keypoint_id1, matches)
                     if keypoint_id2 < 0:
                         # match not found
                         continue
-                    assert(keypoint_id2 < len(keypoints_list[img_id2]))
-                    if keypoints_visited[img_id2, keypoint_id2]:
+                    assert(keypoint_id2 < num_keypoints_list[img_id2-1])
+                    if keypoints_visited[img_id2-1, keypoint_id2]:
                         continue
-                    img_marked[img_id2] = True
-                    keypoints_visited[img_id2, keypoint_id2] = True
+                    img_marked[img_id2-1] = True
+                    keypoints_visited[img_id2-1, keypoint_id2] = True
                     touched.append(img_id2)
                     features.append((img_id2, keypoint_id2))
                     features_queue.put((img_id2, keypoint_id2))
@@ -71,7 +71,7 @@ def ComputeTracks(num_images, num_keypoints_list, matches_list, track_degree):
             # in a consistent way (by construction)
             if len(features) >= track_degree:
                 # show up in enough number of images
-                tracks.push_back(features)
+                tracks.append(features)
     
     # All tracks have been computed
     # we check which tracks and keypoints are visible in each image
@@ -80,8 +80,8 @@ def ComputeTracks(num_images, num_keypoints_list, matches_list, track_degree):
     visible_keypoints = [[]] * num_images
     for track_idx, track in enumerate(tracks):
         for img_id, keypoint_id in track:
-            visible_tracks[img_id].append(track_idx)
-            visible_keypoints[img_id].append(keypoint_id)
+            visible_tracks[img_id-1].append(track_idx)
+            visible_keypoints[img_id-1].append(keypoint_id)
 
     return tracks, visible_tracks, visible_keypoints
 

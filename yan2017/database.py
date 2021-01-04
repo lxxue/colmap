@@ -203,7 +203,7 @@ if __name__ == "__main__":
         break
     
     print("keypoints")
-    results = db.execute("select * FROM keypoints")
+    results = db.execute("SELECT * FROM keypoints")
     for result in results:
         image_id, rows, cols, keypoints = result
         # print(image_id, rows, cols, blob_to_array(keypoints, np.float32).reshape((rows, cols))[0:10])
@@ -211,7 +211,7 @@ if __name__ == "__main__":
         # break
 
     print("matches")
-    results = db.execute("select * FROM matches")
+    results = db.execute("SELECT * FROM matches")
     for result in results:
         # print(result)
         pair_id, rows, cols, matches = result
