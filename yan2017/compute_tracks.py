@@ -97,6 +97,7 @@ def ComputeTracks(num_images, num_keypoints_list, matches_list, track_degree):
             visible_tracks[img_id-1].append(track_idx)
             visible_keypoints[img_id-1].append(keypoint_id)
 
+    print("[----------ComputeTracks Done----------")
     return tracks, visible_tracks, visible_keypoints
 
 
