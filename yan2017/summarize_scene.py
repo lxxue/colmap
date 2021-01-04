@@ -62,9 +62,12 @@ def SummarizeScene(tracks, visible_tracks, visible_keypoints, coverage_thres, al
         # print(cur_coverage)
 
     _, unique_tracks = IntersectList(confusing_tracks, covered_tracks)
+    # print(confusing_tracks)
+    # print(sorted(unique_tracks))
     print("{} images included in the iconic set".format(np.sum(img_included)))
+    print("there are {} confusing tracks and {} unique tracks".format(len(confusing_tracks), len(unique_tracks)))
     print("-----------SummarizeScene Done-----------")
-    return confusing_tracks, unique_tracks, img_included
+    return unique_tracks, img_included
 
                 
 

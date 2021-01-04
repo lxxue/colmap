@@ -32,9 +32,9 @@ def Disambiguate(db_path, new_db_path, params):
     matches_list = MatchesList(num_images, database=db) 
     tracks, visible_tracks, visible_keypoints = ComputeTracks(
             num_images, num_keypoints_list, matches_list, params.track_degree)
-    confusing_tracks, unique_tracks, img_included = SummarizeScene(
+    unique_tracks, img_included = SummarizeScene(
             tracks, visible_tracks, visible_keypoints, params.coverage_thres, params.alpha) 
-    path_graph, is_geo_neighbors = ConstructPathNetwork(
+    is_geo_neighbors = ConstructPathNetwork(
             num_images, matches_list, img_included, unique_tracks, visible_tracks, params.minimal_views, params.score_thres)
     RewriteDatabese(db, new_db_path, is_geo_neighbors)
 
