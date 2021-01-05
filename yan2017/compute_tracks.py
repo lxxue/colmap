@@ -82,7 +82,7 @@ def ComputeTracks(num_images, num_keypoints_list, matches_list, track_degree):
                 # show up in enough number of images
                 # print("Point with {} projections found".format(len(features)))
                 tracks.append(features)
-                # print("track {} consists of: ".format(len(tracks)), features)
+                print("track {} consists of {} features".format(len(tracks), len(features)))
     
     # All tracks have been computed
     # we check which tracks and keypoints are visible in each image

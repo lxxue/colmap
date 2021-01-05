@@ -2,6 +2,7 @@ import numpy as np
 import sqlite3
 from collections import namedtuple
 import argparse
+import time
 
 from database import COLMAPDatabase
 from matches_list import MatchesList
@@ -31,16 +32,32 @@ def Disambiguate(params):
     #     num_keypoints_list.append(rows)
     #     print(image_id, rows)
     # print(num_keypoints_list)
+    t0 = time.time()
     matches_list = MatchesList(num_images, database=db) 
+    t1 = time.time()
+    print("matches sorted")
     tracks, visible_tracks, visible_keypoints = ComputeTracks(
             num_images, num_keypoints_list, matches_list, params.track_degree)
+    t2 = time.time()
     unique_tracks, img_included = SummarizeScene(
             tracks, visible_tracks, visible_keypoints, params.coverage_thres, params.alpha) 
+    t3 = time.time()
     is_geo_neighbors = ConstructPathNetwork(
             num_images, matches_list, img_included, unique_tracks, visible_tracks, params.minimal_views, params.score_thres)
+    t4 = time.time()
     RewriteDatabese(db, params.new_db_path, is_geo_neighbors)
     db.close()
+    t5 = time.time()
     CompareDatabase(params.db_path, params.new_db_path)
+    t6 = time.time()
+
+    print("----------------Time Analysis---------------------")
+    print("Sort Matches: {:.2f} minutes".format((t1-t0)/60))
+    print("Compute Tracks: {:.2f} minutes".format((t2-t1)/60))
+    print("Summarize Scene: {:.2f} minutes".format((t3-t2)/60))
+    print("Construct Path Network: {:.2f} minutes".format((t4-t3)/60))
+    print("Rewrite Database: {:.2f} minutes".format((t5-t4)/60))
+    print("Compare Database: {:.2f} minutes".format((t6-t5)/60))
 
 
 if __name__ == "__main__":
@@ -62,5 +79,7 @@ if __name__ == "__main__":
     params = parser.parse_args()
     Disambiguate(params)
     
+    # example
+    # python data/yan2017/colmap_street/match.db data/yan2017/colmap_street/new_match.db
     # params = DisambiguateParameters()
     # Disambiguate("data/yan2017/colmap_street/match.db", "data/yan2017/colmap_street/new_match.db", params)
